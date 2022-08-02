@@ -1,6 +1,15 @@
 from typing import Tuple
 
 import pandas
+from pydantic import BaseModel, constr
+
+
+class CharList(BaseModel):
+    """
+    Input schema for multiplying ASCII characters.
+    """
+
+    __root__: list[constr(min_length=1, max_length=1)]
 
 
 def multiply_formula(char: int, multiply_by: float, ranges: list[Tuple[int, int]]):
@@ -19,7 +28,7 @@ def multiply_formula(char: int, multiply_by: float, ranges: list[Tuple[int, int]
     return 0
 
 
-def multiply(chars: list[str]) -> list[int]:
+def multiply(chars: CharList) -> list[int]:
     """
     Multiplies the decimal representation of each character in the list by 10 given that
     said character is between a and h, A and H.
@@ -27,9 +36,11 @@ def multiply(chars: list[str]) -> list[int]:
     :param chars: A list of ASCII characters.
     :return: A list of integers.
     """
-    series = pandas.Series([ord(char) for char in chars])
-    series = series.apply(multiply_formula,
-                          multiply_by=10,
-                          ranges=[(ord('a'), ord('g')), (ord('A'), ord('G'))])
+    series = pandas.Series([ord(str(char)) for char in chars])
+    series = series.apply(
+        multiply_formula,
+        multiply_by=10,
+        ranges=[(ord("a"), ord("g")), (ord("A"), ord("G"))],
+    )
 
     return series.tolist()
