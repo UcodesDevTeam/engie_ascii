@@ -36,7 +36,7 @@ def multiply(chars: CharList) -> list[int]:
     :param chars: A list of ASCII characters.
     :return: A list of integers.
     """
-    series = pandas.Series([ord(str(char)) for char in chars])
+    series = pandas.Series([ord(str(char)) for char in chars], dtype=int)
     series = series.apply(
         multiply_formula,
         multiply_by=10,

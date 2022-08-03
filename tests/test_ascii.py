@@ -7,6 +7,14 @@ def test_request_ascii_convert(client):
     assert response.json == [650, 0, 0, 0]
 
 
+def test_request_ascii_convert_empty(client):
+    """
+    Test /convert. Empty input. Should return an empty list.
+    """
+    response = client.post("/convert", json=[])
+    assert response.json == []
+
+
 def test_request_ascii_convert_invalid_input_1(client):
     """
     Test /convert. Invalid body. Should return error.
